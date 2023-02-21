@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MoviesAPI.Models
+﻿namespace MoviesAPI.Models
 {
     public class Genre
     {
