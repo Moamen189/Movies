@@ -10,6 +10,6 @@ namespace MoviesAPI.Models
 
         }
 
-
+        public DbSet<Genre> Genres { get; set; }
     }
 }

@@ -1,6 +1,1 @@
-﻿namespace MoviesAPI
-{
-    public class GlobalUsing
-    {
-    }
-}
+﻿global using System.ComponentModel.DataAnnotations;
