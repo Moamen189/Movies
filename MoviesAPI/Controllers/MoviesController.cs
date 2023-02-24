@@ -23,9 +23,52 @@ namespace MoviesAPI.Controllers
 
         public async Task<IActionResult> GetAll()
         {
-           var Movies =  await context.Movies.Include(g => g.Genre).ToListAsync();
+           var Movies =  await context.Movies.OrderByDescending(x => x.Rate).Include(g => g.Genre).Select(m => new MovieDetailsDTO
+           {
+               Id= m.Id,
+               GenreId= m.GenreId,
+               GenreName  = m.Genre.Name,
+               Poster = m.Poster,
+               Rate = m.Rate,
+               Storeline = m.Storeline,
+               Title = m.Title,
+               Year = m.Year
+
+           }).ToListAsync();
 
             return Ok(Movies);
+        }
+
+
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var Movie = await context.Movies.Include(g => g.Genre).SingleOrDefaultAsync(x => x.Id == id);
+
+            if(Movie == null )
+            {
+                return NotFound();
+            }
+            var IdValidation = context.Movies.Any(x => x.Id == id);
+
+            if (!IdValidation)
+            {
+                return BadRequest("Id is not Found");
+            }
+
+            var dto = new MovieDetailsDTO
+            {
+                Id = Movie.Id,
+                GenreId = Movie.GenreId,
+                GenreName = Movie.Genre.Name,
+                Poster = Movie.Poster,
+                Rate = Movie.Rate,
+                Storeline = Movie.Storeline,
+                Title = Movie.Title,
+                Year = Movie.Year
+
+            };
+            return Ok(dto);
         }
         [HttpPost]
         
