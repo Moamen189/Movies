@@ -38,7 +38,7 @@ namespace MoviesAPI.Controllers
 
             return Ok(Movies);
         }
-
+         
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById(int id)
@@ -70,6 +70,29 @@ namespace MoviesAPI.Controllers
             };
             return Ok(dto);
         }
+
+        [HttpGet("GetByGenreId")]
+        public async Task<IActionResult> GetByGenreId(byte GenreId)
+        {
+            var Movies = await context.Movies
+                .Where(m => m.GenreId == GenreId)
+                .OrderByDescending(x => x.Rate).Include(g => g.Genre).Select(m => new MovieDetailsDTO
+            {
+                Id = m.Id,
+                GenreId = m.GenreId,
+                GenreName = m.Genre.Name,
+                Poster = m.Poster,
+                Rate = m.Rate,
+                Storeline = m.Storeline,
+                Title = m.Title,
+                Year = m.Year
+
+            }).ToListAsync();
+
+            return Ok(Movies);
+
+        }
+
         [HttpPost]
         
         public async Task<IActionResult> Create([FromForm] MoviesDto dto)
@@ -111,5 +134,25 @@ namespace MoviesAPI.Controllers
 
             return Ok(Movie);
         }
+
+
+        [HttpDelete("{Id}")]
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var Movie =  await context.Movies.SingleOrDefaultAsync(g => g.Id == id);
+
+            if (Movie == null)
+            {
+                return BadRequest("Not Found"); 
+            }
+
+             context.Movies.Remove(Movie);
+            context.SaveChanges();
+            return Ok(Movie);
+        }
+
+
+
     }
 }
