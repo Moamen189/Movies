@@ -18,6 +18,13 @@ namespace MoviesAPI.Controllers
             this.context = context;
         }
 
+
+        //[HttpGet]
+
+        //public async Task<IActionResult> Get()
+        //{
+
+        //}
         [HttpPost]
         
         public async Task<IActionResult> Create([FromForm] MoviesDto dto)
