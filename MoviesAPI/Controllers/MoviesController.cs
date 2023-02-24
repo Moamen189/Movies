@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using MoviesAPI.Models;
 
 namespace MoviesAPI.Controllers
 {
@@ -97,6 +99,10 @@ namespace MoviesAPI.Controllers
         
         public async Task<IActionResult> Create([FromForm] MoviesDto dto)
         {
+            if(dto.Poster == null)
+            {
+                return BadRequest("Posters is Required");
+            }
             if (!_allowedExtenstions.Contains(Path.GetExtension(dto.Poster.FileName).ToLower()))
             {
                 return BadRequest("Only .png and .jpg are Allowed");
@@ -135,7 +141,58 @@ namespace MoviesAPI.Controllers
             return Ok(Movie);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromForm] MoviesDto dto)
+        {
 
+            var Movie = await context.Movies.FindAsync(id);
+
+            if (Movie == null)
+            {
+                return BadRequest("Not Found");
+            }
+
+            var isValidId = await context.Genres.AnyAsync(g => g.Id == dto.GenreId);
+
+            if (!isValidId)
+            {
+                return BadRequest("This id is not Allowed");
+
+            }
+
+            if(dto.Poster != null)
+            {
+                if (!_allowedExtenstions.Contains(Path.GetExtension(dto.Poster.FileName).ToLower()))
+                {
+                    return BadRequest("Only .png and .jpg are Allowed");
+                }
+
+
+                if (dto.Poster.Length > _maxAllowedSize)
+                {
+                    return BadRequest("The Maximuim Size is 1 MB");
+                }
+                using var DataStream = new MemoryStream();
+
+                await dto.Poster.CopyToAsync(DataStream);
+
+                Movie.Poster = DataStream.ToArray();
+            }
+
+
+            Movie.Title = dto.Title;
+            Movie.Year = dto.Year;
+            Movie.Storeline = dto.Storeline;
+            Movie.Rate = dto.Rate;
+        
+            Movie.GenreId = dto.GenreId;
+
+            context.SaveChanges();
+
+            return Ok(Movie);
+
+
+        }
         [HttpDelete("{Id}")]
 
         public async Task<IActionResult> Delete(int id)
