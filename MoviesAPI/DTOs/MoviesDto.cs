@@ -14,7 +14,7 @@
 
         public IFormFile Poster { get; set; }
 
-        public int GenreId { get; set; }
+        public byte GenreId { get; set; }
 
         
     }

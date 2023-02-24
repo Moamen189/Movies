@@ -1,7 +1,10 @@
-﻿namespace MoviesAPI.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MoviesAPI.Models
 {
     public class Movie
     {
+        
         public int Id { get; set; }
 
         [MaxLength(100)]
@@ -16,7 +19,7 @@
 
         public byte[] Poster { get; set; }
 
-        public int GenreId { get; set; }
+        public byte GenreId { get; set; }
 
         public Genre Genre { get; set; }
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesAPI.Models;
 
@@ -11,9 +12,10 @@ using MoviesAPI.Models;
 namespace MoviesAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230224131248_upo")]
+    partial class upo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +50,10 @@ namespace MoviesAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<byte>("GenreId")
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("GenreId1")
                         .HasColumnType("tinyint");
 
                     b.Property<byte[]>("Poster")
@@ -71,7 +76,7 @@ namespace MoviesAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("GenreId1");
 
                     b.ToTable("Movies");
                 });
@@ -80,7 +85,7 @@ namespace MoviesAPI.Migrations
                 {
                     b.HasOne("MoviesAPI.Models.Genre", "Genre")
                         .WithMany()
-                        .HasForeignKey("GenreId")
+                        .HasForeignKey("GenreId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

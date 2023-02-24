@@ -19,12 +19,14 @@ namespace MoviesAPI.Controllers
         }
 
 
-        //[HttpGet]
+        [HttpGet]
 
-        //public async Task<IActionResult> Get()
-        //{
+        public async Task<IActionResult> GetAll()
+        {
+           var Movies =  await context.Movies.Include(g => g.Genre).ToListAsync();
 
-        //}
+            return Ok(Movies);
+        }
         [HttpPost]
         
         public async Task<IActionResult> Create([FromForm] MoviesDto dto)
@@ -60,9 +62,9 @@ namespace MoviesAPI.Controllers
                 GenreId = dto.GenreId ,
                     };
 
-            await context.Movies.AddAsync(Movie); 
-               
-            context.SaveChangesAsync();
+            await context.Movies.AddAsync(Movie);
+
+            context.SaveChanges();
 
             return Ok(Movie);
         }
