@@ -7,7 +7,7 @@ namespace MoviesAPI.Helpers
         public MappingProfile()
         {
             CreateMap<Movie , MovieDetailsDTO>();
-            CreateMap<MovieDetailsDTO, Movie>();
+            CreateMap<MovieDetailsDTO, Movie>().ForMember(src => src.Poster , opt => opt.Ignore());
 
         }
     }
