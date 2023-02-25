@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MoviesAPI.Models;
 
 namespace MoviesAPI.Services
 {
@@ -30,9 +31,10 @@ namespace MoviesAPI.Services
             return movie;
         }
 
-        public async Task<IEnumerable<Movie>> GetAll()
+        public async Task<IEnumerable<Movie>> GetAll(byte genreId = 0)
         {
-          return  await context.Movies.OrderByDescending(x => x.Rate).Include(g => g.Genre).ToListAsync();
+          return  await context.Movies.Where(m => m.GenreId == genreId || genreId ==0)
+                .OrderByDescending(x => x.Rate).Include(g => g.Genre).ToListAsync();
         }
 
         public async Task<Movie> Getbyid(int id)

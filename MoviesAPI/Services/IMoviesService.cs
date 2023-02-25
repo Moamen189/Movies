@@ -2,7 +2,7 @@
 {
     public interface IMoviesService
     {
-        Task<IEnumerable<Movie>> GetAll();
+        Task<IEnumerable<Movie>> GetAll(byte genreId  = 0);
         Task<Movie> Getbyid(int id);
 
         Task<Movie> Add(Movie movie);
