@@ -21,9 +21,14 @@ namespace MoviesAPI.Services
             return Genre;
         }
 
-        public Task<Genre> Delete(Genre Genre)
+        public Genre Delete(Genre Genre)
         {
-            throw new NotImplementedException();
+           
+            context.Genres.Remove(Genre);
+
+            context.SaveChanges();
+
+            return Genre;
         }
 
         public async Task<IEnumerable<Genre>> GetAll()
@@ -33,9 +38,20 @@ namespace MoviesAPI.Services
             return genres;
         }
 
-        public Task<Genre> Update(Genre Genre)
+        public async Task<Genre> GetById(byte id)
         {
-            throw new NotImplementedException();
+            var genre = await context.Genres.SingleOrDefaultAsync(gen => gen.Id == id);
+
+            return genre;
+        }
+
+        public Genre Update(Genre Genre)
+        {
+            context.Genres.Update(Genre);
+
+            context.SaveChanges();
+
+            return Genre;
         }
     }
 }

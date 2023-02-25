@@ -4,10 +4,11 @@
     {
         Task<IEnumerable<Genre>> GetAll();
 
+        Task<Genre> GetById(byte id);
         Task<Genre> Add(Genre Genre);
 
-        Task<Genre> Update(Genre Genre);
+       Genre Update(Genre Genre);
 
-        Task<Genre> Delete(Genre Genre);
+        Genre Delete(Genre Genre);
     }
 }
