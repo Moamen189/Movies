@@ -15,7 +15,7 @@ namespace MoviesAPI.Services
         }
         public async Task<Movie> Add(Movie movie)
         {
-            await context.Movies.AddAsync(Movie);
+            await context.Movies.AddAsync(movie);
 
             context.SaveChanges();
 
@@ -24,7 +24,10 @@ namespace MoviesAPI.Services
 
         public Movie Delete(Movie movie)
         {
-            throw new NotImplementedException();
+            context.Remove(movie);
+            context.SaveChanges();
+
+            return movie;
         }
 
         public async Task<IEnumerable<Movie>> GetAll()
@@ -39,7 +42,10 @@ namespace MoviesAPI.Services
 
         public Movie Update(Movie movie)
         {
-            throw new NotImplementedException();
+            context.Update(movie);
+            context.SaveChanges();
+
+            return movie;
         }
     }
 }
